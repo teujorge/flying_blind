@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flying_blind/screens/play.dart';
 
 import '../config.dart';
 import 'play.dart';

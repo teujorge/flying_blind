@@ -9,7 +9,6 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
-import 'main.dart';
 import 'game.dart';
 import 'characters/airplane.dart';
 import 'screens/options.dart';
