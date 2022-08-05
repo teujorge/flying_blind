@@ -24,7 +24,7 @@ class Collectable extends SpriteComponent with CollisionCallbacks {
         (Random().nextDouble() * 2 * gameRef.airplane.s.value.z / 2) -
         gameRef.airplane.s.value.z / 2;
     // realPosition = Vector3(distanceTo, yRealDistance, zRealDistance);
-    realPosition = Vector3(50, 0, 0);
+    realPosition = Vector3(gameRef.airplane.s.value.x + 75, 0, 0);
     position = Vector2(
       gameRef.hud.screenSize.width / 2,
       gameRef.hud.screenSize.height / 2,
