@@ -54,7 +54,7 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 40.0),
                 child: BabaText(
-                  "Atlas Arena",
+                  "Flying Blind",
                   style: const TextStyle(
                     fontSize: 100.0,
                     shadows: [

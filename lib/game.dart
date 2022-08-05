@@ -67,10 +67,10 @@ class FlyGame extends FlameGame
     // new accels
     airplane.updateInertia(dt);
 
-    // if (Random().nextInt(250) == 1) {
-    //   print("COLLECTABLE ADDED");
-    //   add(Collectable(gameRef: this));
-    // }
+    if (Random().nextInt(1000) == 1) {
+      print("COLLECTABLE ADDED");
+      add(Collectable(gameRef: this));
+    }
   }
 
   @override

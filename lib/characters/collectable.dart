@@ -26,6 +26,10 @@ class Collectable extends SpriteComponent with CollisionCallbacks {
         gameRef.airplane.s.value.z / 2;
     // realPosition = Vector3(distanceTo, yRealDistance, zRealDistance);
     realPosition = Vector3(50, 0, 0);
+    position = Vector2(
+      gameRef.hud.screenSize.width / 2,
+      gameRef.hud.screenSize.height / 2,
+    );
   }
 
   realPosToScreen() {
@@ -78,7 +82,16 @@ class Collectable extends SpriteComponent with CollisionCallbacks {
     position = tempPosition;
   }
 
-  airplaneTouch() {
+  @override
+  Future<void>? onLoad() async {
+    await super.onLoad();
+    sprite = await Sprite.load("crosshair.png");
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollision(intersectionPoints, other);
+
     double minY = gameRef.airplane.s.value.y * 0.9;
     double maxY = gameRef.airplane.s.value.y * 1.1;
 
@@ -88,17 +101,10 @@ class Collectable extends SpriteComponent with CollisionCallbacks {
     if (realPosition.x - gameRef.airplane.s.value.x < 50) {
       if (realPosition.y > minY && realPosition.y < maxY) {
         if (realPosition.z > minZ && realPosition.z < maxZ) {
-          return true;
+          gameRef.remove(this);
         }
       }
     }
-    return false;
-  }
-
-  @override
-  Future<void>? onLoad() async {
-    await super.onLoad();
-    sprite = await Sprite.load("crosshair.png");
   }
 
   @override
