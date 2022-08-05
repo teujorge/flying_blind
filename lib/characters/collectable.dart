@@ -3,7 +3,6 @@ import 'package:flame/components.dart';
 
 import 'dart:math';
 
-import 'airplane.dart';
 import '../game.dart';
 
 class Collectable extends SpriteComponent with CollisionCallbacks {
@@ -85,7 +84,7 @@ class Collectable extends SpriteComponent with CollisionCallbacks {
   @override
   Future<void>? onLoad() async {
     await super.onLoad();
-    sprite = await Sprite.load("crosshair.png");
+    sprite = await Sprite.load("circle.png");
   }
 
   @override
