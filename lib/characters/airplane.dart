@@ -93,6 +93,27 @@ class Airplane {
     return globalForces / mass;
   }
 
+  updateAngles(Vector2 relativeDelta) {
+    // pitch(y), yaw(z), roll(x)
+    Vector3 anglesChanged = angles.value +
+        Vector3(
+          relativeDelta.x / size.length +
+              (Random().nextDouble() * (20 / mass) - (10 / mass)),
+          relativeDelta.y / size.length +
+              (Random().nextDouble() * (20 / mass) - (10 / mass)),
+          0,
+        );
+
+    if (anglesChanged.y > 1.57) {
+      anglesChanged.y = 1.57;
+    } else if (anglesChanged.y < -1.57) {
+      anglesChanged.y = -1.57;
+    }
+    // print(angles.value);
+
+    angles.value = anglesChanged;
+  }
+
   // given acceleration update velocity and position
   void updateInertia(double t) {
     double maxA = 2;

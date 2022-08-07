@@ -41,28 +41,22 @@ class Collectable extends SpriteComponent with CollisionCallbacks {
     // );
     // print(tempPosition);
 
-    // // check max/min screen x
-    // if (tempPosition.x < 0) {
-    //   tempPosition.x = 0;
-    // } else if (tempPosition.x > gameRef.hud.screenSize.width) {
-    //   tempPosition.x = 0;
-    // }
-    // // check max/min screen y
-    // if (tempPosition.y < 0) {
-    //   tempPosition.y = 0;
-    // } else if (tempPosition.y > gameRef.hud.screenSize.height) {
-    //   tempPosition.y = 0;
-    // }
-
-    // // update sprite position
-    // position = tempPosition;
+    // pitch(y), yaw(z), roll(x)
+    double navballPosChanged = 0;
+    if (gameRef.airplane.angles.value.y <= 1.56 &&
+        gameRef.airplane.angles.value.y >= -1.56) {
+      navballPosChanged = gameRef.navballMovementMulti *
+          (gameRef.hud.joystick.relativeDelta.y / gameRef.airplane.size.length);
+      print(gameRef.airplane.angles.value.y);
+    }
+    // print(navballPosChanged);
 
     // calc translation
     Vector2 tempPosition = Vector2(
       position.x + -sin(gameRef.airplane.angles.value.x),
-      position.y + sin(gameRef.airplane.angles.value.y),
+      position.y + sin(gameRef.airplane.angles.value.y) + navballPosChanged,
     );
-    print(tempPosition);
+    // print(tempPosition);
 
     // check max/min screen x
     if (tempPosition.x < 0) {

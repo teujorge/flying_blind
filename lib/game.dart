@@ -18,6 +18,8 @@ class FlyGame extends FlameGame
   BuildContext context;
   late Hud hud;
   Airplane airplane;
+  double navballMovement = 0;
+  int navballMovementMulti = 190;
 
   // constructor
   FlyGame(this.context, this.airplane) {
@@ -46,25 +48,19 @@ class FlyGame extends FlameGame
   void update(double dt) async {
     super.update(dt);
 
-    // pitch(y), yaw(z), roll(x)
-
-    airplane.angles.value += Vector3(
-      hud.joystick.relativeDelta.x / airplane.size.length +
-          (Random().nextDouble() * (20 / airplane.mass) - (10 / airplane.mass)),
-      hud.joystick.relativeDelta.y / airplane.size.length +
-          (Random().nextDouble() * (20 / airplane.mass) - (10 / airplane.mass)),
-      0,
-    );
+    airplane.updateAngles(hud.joystick.relativeDelta);
 
     airplane.crosshair.angle = airplane.angles.value.x;
     // airplane.navball.angle = -airplane.angles.value.x;
-    airplane.navball.position.y =
-        (airplane.angles.value.y * 180) + (hud.screenSize.height / 2);
+
+    navballMovement = (airplane.angles.value.y * navballMovementMulti);
+    airplane.navball.position.y = navballMovement + (hud.screenSize.height / 2);
 
     // print(
     //     "${airplane.angles.value.y * 180 / 3.14} ${airplane.angles.value.x * 180 / 3.14}");
 
     // new accels
+    airplane.updateThrottle(5);
     airplane.updateInertia(dt);
 
     if (Random().nextInt(500) == 100) {
