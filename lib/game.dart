@@ -18,6 +18,7 @@ class FlyGame extends FlameGame
   BuildContext context;
   late Hud hud;
   Airplane airplane;
+  ValueNotifier<int> score = ValueNotifier<int>(0);
   double navballMovement = 0;
   int navballMovementMulti = 190;
 

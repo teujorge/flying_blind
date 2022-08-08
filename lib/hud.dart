@@ -10,8 +10,8 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'game.dart';
-import 'characters/airplane.dart';
 import 'screens/options.dart';
+import 'characters/airplane.dart';
 
 class Hud extends Component {
 // game and app
@@ -86,7 +86,6 @@ class Hud extends Component {
         screenSize.width / 2,
         500,
       );
-
     airplane.navball.sprite = await Sprite.load("navball.png");
     add(airplane.navball);
 
@@ -97,7 +96,6 @@ class Hud extends Component {
         screenSize.width / 2,
         screenSize.height / 2,
       );
-
     airplane.crosshair.sprite = await Sprite.load("crosshair.png");
     add(airplane.crosshair);
 
@@ -143,6 +141,16 @@ class Hud extends Component {
     airplane.angles.addListener(() {
       angTextComponent.text =
           'Pitch: ${(airplane.angles.value.y * 180 / 3.14).round()}\nRoll: ${(airplane.angles.value.x * 180 / 3.14).round()}\nYaw: ${(airplane.angles.value.z * 180 / 3.14).round()}';
+    });
+
+    // score
+    final scoreTextComponent = TextComponent(
+      text: 'Angles: ',
+      position: Vector2(200, 50),
+    );
+    add(scoreTextComponent);
+    game.score.addListener(() {
+      scoreTextComponent.text = 'Score: ${game.score.value}';
     });
 
     // joystick
