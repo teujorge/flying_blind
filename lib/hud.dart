@@ -146,7 +146,7 @@ class Hud extends Component {
     // score
     final scoreTextComponent = TextComponent(
       text: 'Angles: ',
-      position: Vector2(200, 50),
+      position: Vector2(200, 150),
     );
     add(scoreTextComponent);
     game.score.addListener(() {
