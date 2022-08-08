@@ -27,7 +27,7 @@ class Collectable extends SpriteComponent with CollisionCallbacks {
     );
 
     double distanceTo =
-        gameRef.airplane.s.value.x + Random().nextDouble() * 500 - 250;
+        gameRef.airplane.s.value.x + Random().nextDouble() * 250 + 100;
     double yRealDistance = gameRef.airplane.s.value.y +
         (Random().nextDouble() * 2 * gameRef.airplane.s.value.y / 2) -
         gameRef.airplane.s.value.y / 2;
