@@ -19,7 +19,7 @@ class Airplane {
   // avionics
   SpriteComponent crosshair = SpriteComponent(anchor: Anchor.center);
   SpriteComponent navball = SpriteComponent(anchor: Anchor.center);
-  double power = 5;
+  ValueNotifier<double> power = ValueNotifier<double>(50);
   late Slider throttleController;
 
   // constructor
@@ -35,7 +35,7 @@ class Airplane {
       max: 10,
       value: 5,
       onChanged: (double value) {
-        power = value;
+        power.value = value;
       },
     );
   }
@@ -51,7 +51,7 @@ class Airplane {
     double gravity = mass * 9.81;
 
     // force forward
-    double thrust = power * 1000;
+    double thrust = power.value * 1000;
     // force backward
     double drag = cd * 0.5 * (rho * v.value.x * v.value.x) * size.z * size.y;
 
@@ -104,12 +104,37 @@ class Airplane {
           0,
         );
 
-    if (anglesChanged.y > 1.57) {
-      anglesChanged.y = 1.57;
-    } else if (anglesChanged.y < -1.57) {
-      anglesChanged.y = -1.57;
+    const double fullCircleRad = 6.28319;
+
+    // max/min pitch
+    if (anglesChanged.y > fullCircleRad / 4) {
+      anglesChanged.y = fullCircleRad / 4;
+    } else if (anglesChanged.y < -fullCircleRad / 4) {
+      anglesChanged.y = -fullCircleRad / 4;
     }
-    // print(angles.value);
+
+    // after 360 deg reset to 0 deg
+    if (anglesChanged.x >= fullCircleRad) {
+      anglesChanged = Vector3(
+        anglesChanged.x - fullCircleRad,
+        anglesChanged.y,
+        anglesChanged.z,
+      );
+    }
+    if (anglesChanged.y >= fullCircleRad) {
+      anglesChanged = Vector3(
+        anglesChanged.x,
+        anglesChanged.y - fullCircleRad,
+        anglesChanged.z,
+      );
+    }
+    if (anglesChanged.z >= fullCircleRad) {
+      anglesChanged = Vector3(
+        anglesChanged.x,
+        anglesChanged.y,
+        anglesChanged.z - fullCircleRad,
+      );
+    }
 
     angles.value = anglesChanged;
   }
@@ -135,6 +160,7 @@ class Airplane {
       acc.z = maxA / 2;
     }
     a.value = acc;
+
     // velocity
     Vector3 tempV = (a.value * t) + v.value;
     if (tempV.x > maxV) {
@@ -166,24 +192,8 @@ class Airplane {
           .75,
     );
     v.value = tempV;
+
     // position
     s.value = (a.value * 0.5 * t * t) + (v.value * t) + s.value;
-  }
-
-  // update throttle value
-  void updateThrottle(double t) {
-    power = t;
-    if (angles.value.x >= 360) {
-      angles.value =
-          Vector3(angles.value.x - 360, angles.value.y, angles.value.z);
-    }
-    if (angles.value.y >= 360) {
-      angles.value =
-          Vector3(angles.value.x, angles.value.y - 360, angles.value.z);
-    }
-    if (angles.value.z >= 360) {
-      angles.value =
-          Vector3(angles.value.x, angles.value.y, angles.value.z - 360);
-    }
   }
 }
