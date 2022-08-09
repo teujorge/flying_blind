@@ -1,13 +1,13 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:flying_blind/characters/collectable.dart';
-import 'package:flying_blind/screens/play.dart';
 
 import 'dart:math';
 
 import 'hud.dart';
+import 'screens/play.dart';
 import 'screens/options.dart';
 import 'characters/airplane.dart';
+import 'characters/collectable.dart';
 
 class FlyGame extends FlameGame
     with

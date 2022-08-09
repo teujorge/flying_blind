@@ -1,9 +1,8 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
-import '../characters/airplane.dart';
-import '../main.dart';
 import '../game.dart';
+import '../characters/airplane.dart';
 
 class GamePlay extends StatelessWidget {
   final Airplane airplane;
@@ -60,7 +59,6 @@ class ThrottleStickState extends State<ThrottleStick> {
                 widget.game.airplane.power.value = value;
                 sliderValue = value;
               });
-              print(widget.game.airplane.power);
             },
           ),
         ),

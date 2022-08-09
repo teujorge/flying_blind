@@ -20,10 +20,14 @@ class Collectable extends SpriteComponent with CollisionCallbacks {
     double randomDistancer =
         gameRef.airplane.s.value.x + Random().nextInt(350) + 150;
     // min=-500, max=500 : screen X-Y axis randomizers
+    // double randomYPositioner =
+    //     gameRef.hud.screenSize.width / 2 + Random().nextInt(1000) - 500;
+    // double randomZPositioner =
+    //     gameRef.hud.screenSize.height / 2 + Random().nextInt(1000) - 500;
     double randomYPositioner =
-        gameRef.hud.screenSize.width / 2 + Random().nextInt(1000) - 500;
+        gameRef.airplane.s.value.y + Random().nextInt(1000) - 500;
     double randomZPositioner =
-        gameRef.hud.screenSize.height / 2 + Random().nextInt(1000) - 500;
+        gameRef.airplane.s.value.y + Random().nextInt(1000) - 500;
 
     // random real 3D position
     realPosition = Vector3(
@@ -43,9 +47,7 @@ class Collectable extends SpriteComponent with CollisionCallbacks {
         gameRef.airplane.angles.value.y >= -1.56) {
       navballPosChanged = gameRef.navballMovementMulti *
           (gameRef.hud.joystick.relativeDelta.y / gameRef.airplane.size.length);
-      // print(gameRef.airplane.angles.value.y);
     }
-    // print(navballPosChanged);
 
     // calc translation
     Vector2 tempPosition = Vector2(
@@ -54,7 +56,6 @@ class Collectable extends SpriteComponent with CollisionCallbacks {
     );
     realPosition.y = tempPosition.x;
     realPosition.z = tempPosition.y;
-    // print(tempPosition);
 
     // check max/min screen x
     if (tempPosition.x < 0) {
@@ -99,9 +100,9 @@ class Collectable extends SpriteComponent with CollisionCallbacks {
           realPosition.y > gameRef.hud.screenSize.width * 0.9 / 2 &&
           realPosition.y < gameRef.hud.screenSize.width * 1.1 / 2) {
         gameRef.score.value++;
-        print("score : ${gameRef.score}");
+        // print("score : ${gameRef.score}");
       }
-      print("passed collectable");
+      // print("passed collectable");
       gameRef.remove(this);
     }
   }
