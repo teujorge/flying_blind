@@ -74,75 +74,31 @@ class Airplane {
     // y' = y*cos(yaw) + x*sin(yaw)
 
     // pitch(y), yaw(z), roll(x)
-    Vector3 globalForces = Vector3(
-      localForces.x * cos(angles.value.y) +
-          localForces.z * sin(angles.value.y) +
-          localForces.x * cos(angles.value.z) +
-          localForces.y * sin(angles.value.z),
-      localForces.y * cos(angles.value.z) +
-          localForces.x * sin(angles.value.z) +
-          localForces.x * cos(angles.value.x) +
-          localForces.z * sin(angles.value.x),
-      localForces.z * cos(angles.value.y) +
-          localForces.x * sin(angles.value.y) +
-          localForces.z * cos(angles.value.x) +
-          localForces.y * sin(angles.value.x) -
-          gravity,
-    );
+    Vector3 globalAcc = Vector3(
+          localForces.x * cos(angles.value.y) +
+              localForces.z * sin(angles.value.y) +
+              localForces.x * cos(angles.value.z) +
+              localForces.y * sin(angles.value.z),
+          localForces.y * cos(angles.value.z) +
+              localForces.x * sin(angles.value.z) +
+              localForces.x * cos(angles.value.x) +
+              localForces.z * sin(angles.value.x),
+          localForces.z * cos(angles.value.y) +
+              localForces.x * sin(angles.value.y) +
+              localForces.z * cos(angles.value.x) +
+              localForces.y * sin(angles.value.x) -
+              gravity,
+        ) /
+        mass;
 
-    return globalForces / mass;
-  }
-
-  updateAngles(Vector2 relativeDelta) {
-    // pitch(y), yaw(z), roll(x)
-    Vector3 anglesChanged = angles.value +
-        Vector3(
-          relativeDelta.x / size.length +
-              (Random().nextDouble() * (20 / mass) - (10 / mass)),
-          relativeDelta.y / size.length +
-              (Random().nextDouble() * (20 / mass) - (10 / mass)),
-          0,
-        );
-
-    const double fullCircleRad = 6.28319;
-
-    // max/min pitch
-    if (anglesChanged.y > fullCircleRad / 4) {
-      anglesChanged.y = fullCircleRad / 4;
-    } else if (anglesChanged.y < -fullCircleRad / 4) {
-      anglesChanged.y = -fullCircleRad / 4;
-    }
-
-    // after 360 deg reset to 0 deg
-    if (anglesChanged.x >= fullCircleRad) {
-      anglesChanged = Vector3(
-        anglesChanged.x - fullCircleRad,
-        anglesChanged.y,
-        anglesChanged.z,
-      );
-    }
-    if (anglesChanged.y >= fullCircleRad) {
-      anglesChanged = Vector3(
-        anglesChanged.x,
-        anglesChanged.y - fullCircleRad,
-        anglesChanged.z,
-      );
-    }
-    if (anglesChanged.z >= fullCircleRad) {
-      anglesChanged = Vector3(
-        anglesChanged.x,
-        anglesChanged.y,
-        anglesChanged.z - fullCircleRad,
-      );
-    }
-
-    angles.value = anglesChanged;
+    print(globalAcc);
+    return globalAcc;
   }
 
   // given acceleration update velocity and position
   void updateInertia(double t) {
-    double maxA = 2;
-    double maxV = 10;
+    double maxV = 100;
+    double maxA = 10;
     Vector3 acc = calcAcc();
 
     // acceleration
@@ -195,5 +151,51 @@ class Airplane {
 
     // position
     s.value = (a.value * 0.5 * t * t) + (v.value * t) + s.value;
+  }
+
+  void updateAngles(Vector2 relativeDelta) {
+    // pitch(y), yaw(z), roll(x)
+    Vector3 anglesChanged = angles.value +
+        Vector3(
+          relativeDelta.x / size.length +
+              (Random().nextDouble() * (20 / mass) - (10 / mass)),
+          relativeDelta.y / size.length +
+              (Random().nextDouble() * (20 / mass) - (10 / mass)),
+          0,
+        );
+
+    const double fullCircleRad = 6.28319;
+
+    // max/min pitch
+    if (anglesChanged.y > fullCircleRad / 4) {
+      anglesChanged.y = fullCircleRad / 4;
+    } else if (anglesChanged.y < -fullCircleRad / 4) {
+      anglesChanged.y = -fullCircleRad / 4;
+    }
+
+    // after 360 deg reset to 0 deg
+    if (anglesChanged.x >= fullCircleRad) {
+      anglesChanged = Vector3(
+        anglesChanged.x - fullCircleRad,
+        anglesChanged.y,
+        anglesChanged.z,
+      );
+    }
+    if (anglesChanged.y >= fullCircleRad) {
+      anglesChanged = Vector3(
+        anglesChanged.x,
+        anglesChanged.y - fullCircleRad,
+        anglesChanged.z,
+      );
+    }
+    if (anglesChanged.z >= fullCircleRad) {
+      anglesChanged = Vector3(
+        anglesChanged.x,
+        anglesChanged.y,
+        anglesChanged.z - fullCircleRad,
+      );
+    }
+
+    angles.value = anglesChanged;
   }
 }
