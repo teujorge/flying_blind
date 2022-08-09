@@ -143,6 +143,17 @@ class Hud extends Component {
           'Pitch: ${(airplane.angles.value.y * 180 / 3.14).round()}\nRoll: ${(airplane.angles.value.x * 180 / 3.14).round()}\nYaw: ${(airplane.angles.value.z * 180 / 3.14).round()}';
     });
 
+    // throttle
+    final throttleTextComponent = TextComponent(
+      text: 'Throttle: 0',
+      position: Vector2(screenSize.width - 200, screenSize.height - 300),
+    );
+    add(throttleTextComponent);
+    game.airplane.power.addListener(() {
+      throttleTextComponent.text =
+          'Throttle: ${game.airplane.power.value.round()}';
+    });
+
     // score
     final scoreTextComponent = TextComponent(
       text: 'Angles: ',

@@ -12,12 +12,13 @@ class GamePlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FlyGame game = FlyGame(context, airplane);
+
     return MaterialApp(
       home: Scaffold(
         body: Stack(
           children: [
             GameWidget(game: game),
-            ThrottleStick(game: game),
+            game.throttleStick,
           ],
         ),
       ),
@@ -56,7 +57,7 @@ class ThrottleStickState extends State<ThrottleStick> {
             value: sliderValue,
             onChanged: (value) {
               setState(() {
-                widget.game.airplane.power = value;
+                widget.game.airplane.power.value = value;
                 sliderValue = value;
               });
               print(widget.game.airplane.power);
