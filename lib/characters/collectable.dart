@@ -16,27 +16,24 @@ class Collectable extends SpriteComponent with CollisionCallbacks {
     priority = 1;
     anchor = Anchor.center;
 
-    double randSpawnMulti =
-        (gameRef.hud.screenSize.width > gameRef.hud.screenSize.height)
-            ? gameRef.hud.screenSize.height / 2
-            : gameRef.hud.screenSize.width / 2;
+    // min=150, max=500 : screen 'Z' axis randomizer
+    double randomDistancer =
+        gameRef.airplane.s.value.x + Random().nextInt(350) + 150;
+    // min=-500, max=500 : screen X-Y axis randomizers
+    double randomYPositioner =
+        gameRef.hud.screenSize.width / 2 + Random().nextInt(1000) - 500;
+    double randomZPositioner =
+        gameRef.hud.screenSize.height / 2 + Random().nextInt(1000) - 500;
 
-    position = Vector2(
-      gameRef.hud.screenSize.width / 2 + Random().nextDouble() * 100 - 50,
-      gameRef.hud.screenSize.height / 2 + Random().nextDouble() * 100 - 50,
+    // random real 3D position
+    realPosition = Vector3(
+      randomDistancer,
+      randomYPositioner,
+      randomZPositioner,
     );
 
-    double distanceTo =
-        gameRef.airplane.s.value.x + Random().nextDouble() * 250 + 100;
-    double yRealDistance = gameRef.airplane.s.value.y +
-        (Random().nextDouble() * 2 * gameRef.airplane.s.value.y / 2) -
-        gameRef.airplane.s.value.y / 2;
-    double zRealDistance = gameRef.airplane.s.value.z +
-        (Random().nextDouble() * 2 * gameRef.airplane.s.value.z / 2) -
-        gameRef.airplane.s.value.z / 2;
-    realPosition = Vector3(distanceTo, yRealDistance, zRealDistance);
-    realPosition.y = position.x;
-    realPosition.z = position.y;
+    // random screen position
+    position = Vector2(realPosition.y, realPosition.z);
   }
 
   realPosToScreen() {
