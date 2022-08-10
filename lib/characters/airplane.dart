@@ -19,7 +19,7 @@ class Airplane {
   // avionics
   SpriteComponent crosshair = SpriteComponent(anchor: Anchor.center);
   SpriteComponent navball = SpriteComponent(anchor: Anchor.center);
-  ValueNotifier<double> power = ValueNotifier<double>(50);
+  ValueNotifier<double> power = ValueNotifier<double>(5);
   late Slider throttleController;
 
   // constructor
@@ -41,8 +41,8 @@ class Airplane {
   }
 
   Vector3 calcAcc() {
-    double cl = 0.2; // coefficient of lift
-    double cd = 0.2; // coefficient of drag
+    double cl = 0.5; // coefficient of lift
+    double cd = 0.5; // coefficient of drag
     double rho = 1.2; // air density kg/m^3 - assume const for now
 
     // force up - kg/m^3 * m/s * m/s * m^2 -> kg.m/s^2 -> N
@@ -81,7 +81,7 @@ class Airplane {
               localForces.y * sin(angles.value.z),
           localForces.y * cos(angles.value.z) +
               localForces.x * sin(angles.value.z) +
-              localForces.x * cos(angles.value.x) +
+              localForces.y * cos(angles.value.x) +
               localForces.z * sin(angles.value.x),
           localForces.z * cos(angles.value.y) +
               localForces.x * sin(angles.value.y) +
@@ -97,7 +97,7 @@ class Airplane {
 
   // given acceleration update velocity and position
   void updateInertia(double t) {
-    double maxV = 100;
+    double maxV = 2;
     double maxA = 10;
     Vector3 acc = calcAcc();
 
@@ -112,7 +112,7 @@ class Airplane {
     } else if (acc.y < -maxA) {
       acc.y = -maxA;
     }
-    if (acc.z > maxA) {
+    if (acc.z > maxA / 2) {
       acc.z = maxA / 2;
     }
     a.value = acc;
@@ -129,24 +129,9 @@ class Airplane {
     } else if (tempV.y < -maxV) {
       tempV.y = -maxV;
     }
-    if (tempV.z > maxV) {
+    if (tempV.z > maxV / 20) {
       tempV.z = maxV / 20;
     }
-    tempV = Vector3(
-      1 * cos(angles.value.y) +
-          0 * sin(angles.value.y) +
-          1 * cos(angles.value.z) +
-          0 * sin(angles.value.z),
-      0 * cos(angles.value.z) +
-          1 * sin(angles.value.z) +
-          1 * cos(angles.value.x) +
-          0 * sin(angles.value.x),
-      0 * cos(angles.value.y) +
-          1 * sin(angles.value.y) +
-          0 * cos(angles.value.x) +
-          0 * sin(angles.value.x) -
-          .75,
-    );
     v.value = tempV;
 
     // position
