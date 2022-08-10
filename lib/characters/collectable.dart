@@ -6,9 +6,10 @@ import 'dart:math';
 import '../game.dart';
 
 class Collectable extends SpriteComponent with CollisionCallbacks {
-  Vector2 defaultSize = Vector2(50, 50);
+  double realToScreenPositionMulti = 1.0;
+  final Vector2 defaultSize = Vector2(50, 50);
+  final FlyGame gameRef;
   late Vector3 realPosition;
-  FlyGame gameRef;
 
   Collectable({
     required this.gameRef,
@@ -18,12 +19,8 @@ class Collectable extends SpriteComponent with CollisionCallbacks {
 
     // min=150, max=500 : screen 'Z' axis randomizer
     double randomDistancer =
-        gameRef.airplane.s.value.x + Random().nextInt(350) + 150;
+        gameRef.airplane.s.value.x + Random().nextInt(500) + 500;
     // min=-500, max=500 : screen X-Y axis randomizers
-    // double randomYPositioner =
-    //     gameRef.hud.screenSize.width / 2 + Random().nextInt(1000) - 500;
-    // double randomZPositioner =
-    //     gameRef.hud.screenSize.height / 2 + Random().nextInt(1000) - 500;
     double randomYPositioner =
         gameRef.airplane.s.value.y + Random().nextInt(1000) - 500;
     double randomZPositioner =
@@ -71,7 +68,7 @@ class Collectable extends SpriteComponent with CollisionCallbacks {
     }
 
     // update sprite position
-    position = tempPosition;
+    position = tempPosition * realToScreenPositionMulti;
   }
 
   @override
@@ -84,17 +81,11 @@ class Collectable extends SpriteComponent with CollisionCallbacks {
   void update(double dt) {
     super.update(dt);
 
-    // real position to screen/display position
-    realPosToScreen();
-
-    // resize sprite to simulate depth
-    double distanceToAirplane =
-        (realPosition - gameRef.airplane.s.value).length;
-    // size = defaultSize / distanceToAirplane;
-    size = defaultSize / (realPosition.x - gameRef.airplane.s.value.x);
+    // get distance
+    double distanceToAirplane = realPosition.x - gameRef.airplane.s.value.x;
 
     // airplane has passed collectable
-    if (gameRef.airplane.s.value.x > realPosition.x) {
+    if (distanceToAirplane <= 0) {
       if (realPosition.z > gameRef.hud.screenSize.height * 0.9 / 2 &&
           realPosition.z < gameRef.hud.screenSize.height * 1.1 / 2 &&
           realPosition.y > gameRef.hud.screenSize.width * 0.9 / 2 &&
@@ -104,6 +95,16 @@ class Collectable extends SpriteComponent with CollisionCallbacks {
       }
       // print("passed collectable");
       gameRef.remove(this);
+      return;
     }
+
+    // resize sprite to simulate depth
+    size = (defaultSize / distanceToAirplane) * 5;
+
+    // realToScreenPositionMulti = 1 / (distanceToAirplane / 1000);
+    // print(realToScreenPositionMulti);
+
+    // real position to screen/display position
+    realPosToScreen();
   }
 }
