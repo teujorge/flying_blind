@@ -16,13 +16,13 @@ class CharacterSelection extends StatefulWidget {
     Airplane(
       mass: 5000,
       size: Vector3(10, 5, 2),
-      position: Vector3(0, 0, 5000),
+      position: Vector3(0, 0, 1000),
     ),
     // med
     Airplane(
       mass: 10000,
       size: Vector3(50, 10, 3),
-      position: Vector3(0, 0, 5000),
+      position: Vector3(0, 0, 2500),
     ),
     // big
     Airplane(

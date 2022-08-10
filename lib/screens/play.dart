@@ -52,7 +52,7 @@ class ThrottleStickState extends State<ThrottleStick> {
           color: Colors.grey.withAlpha(100),
           child: Slider(
             min: 0,
-            max: 100,
+            max: 10,
             value: sliderValue,
             onChanged: (value) {
               setState(() {
