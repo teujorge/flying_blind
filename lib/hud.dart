@@ -156,7 +156,7 @@ class Hud extends Component {
 
     // score
     final scoreTextComponent = TextComponent(
-      text: 'Angles: ',
+      text: 'Score: ',
       position: Vector2(200, 150),
     );
     add(scoreTextComponent);
