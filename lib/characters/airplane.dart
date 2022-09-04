@@ -91,7 +91,7 @@ class Airplane {
         ) /
         mass;
 
-    print(globalAcc);
+    // print(globalAcc);
     return globalAcc;
   }
 
@@ -149,35 +149,33 @@ class Airplane {
           0,
         );
 
-    const double fullCircleRad = 6.28319;
-
     // max/min pitch
-    if (anglesChanged.y > fullCircleRad / 4) {
-      anglesChanged.y = fullCircleRad / 4;
-    } else if (anglesChanged.y < -fullCircleRad / 4) {
-      anglesChanged.y = -fullCircleRad / 4;
+    if (anglesChanged.y > pi / 2) {
+      anglesChanged.y = pi / 2;
+    } else if (anglesChanged.y < -pi / 2) {
+      anglesChanged.y = -pi / 2;
     }
 
     // after 360 deg reset to 0 deg
-    if (anglesChanged.x >= fullCircleRad) {
+    if (anglesChanged.x >= pi * 2) {
       anglesChanged = Vector3(
-        anglesChanged.x - fullCircleRad,
+        anglesChanged.x - pi * 2,
         anglesChanged.y,
         anglesChanged.z,
       );
     }
-    if (anglesChanged.y >= fullCircleRad) {
+    if (anglesChanged.y >= pi * 2) {
       anglesChanged = Vector3(
         anglesChanged.x,
-        anglesChanged.y - fullCircleRad,
+        anglesChanged.y - pi * 2,
         anglesChanged.z,
       );
     }
-    if (anglesChanged.z >= fullCircleRad) {
+    if (anglesChanged.z >= pi * 2) {
       anglesChanged = Vector3(
         anglesChanged.x,
         anglesChanged.y,
-        anglesChanged.z - fullCircleRad,
+        anglesChanged.z - pi * 2,
       );
     }
 
